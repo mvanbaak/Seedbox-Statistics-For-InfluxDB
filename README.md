@@ -9,6 +9,7 @@ This tool will allow you to send stats from a torrent client to InfluxDB for dis
 * Deluge
 * uTorrent
 * rTorrent
+* transmission
 
 ## Usage
 
@@ -34,6 +35,10 @@ Optionally, you can specify the --config argument to load the config file from a
 **rTorrent**
 * Neither username or password are needed in the config
 * URL can very depending on configuration
+
+**transmission**
+* Neither username or password are needed in the config (depending on configuration)
+* URL is the ip address/hostname where transmission is running
 
 rTorrent is tricky since you need something to forward the SCGI requests. For my testing I used nginx to forward requests on port 8000
 Setting this up is beyond the scope of this tool. 
@@ -77,5 +82,10 @@ Python 3+
 You will need the influxdb library installed to use this - [Found Here](https://github.com/influxdata/influxdb-python)
 
 You will need the speedtest-cli library installed to use this - [Found Here](https://github.com/sivel/speedtest-cli)
+
+Depending on your torrent client you will need:
+- rtorrent
+- transmissionrpc
+See the specific requirement-$client.txt files
 
 You also MUST have the Deluge WebUI plugin installed

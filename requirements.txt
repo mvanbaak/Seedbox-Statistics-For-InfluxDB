@@ -1,3 +1,2 @@
 influxdb
 beautifulsoup4
-rtorrent-python

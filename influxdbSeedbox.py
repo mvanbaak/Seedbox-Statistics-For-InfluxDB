@@ -22,7 +22,7 @@ class configManager():
 
     def __init__(self, silent, config):
 
-        self.valid_torrent_clients = ['deluge', 'utorrent', 'rtorrent']
+        self.valid_torrent_clients = ['deluge', 'utorrent', 'rtorrent', 'transmission']
         self.valid_log_levels = {
             'DEBUG': 0,
             'INFO': 1,
@@ -150,6 +150,17 @@ class influxdbSeedbox():
             self.tor_client = rTorrentClient(self.send_log,
                                              username=None,
                                              password=None,
+                                             url=self.config.tor_client_url,
+                                             hostname=self.config.hostname)
+
+
+        elif self.config.tor_client == 'transmission':
+            from clients.transmission import TransmissionClient
+            if self.output:
+                print('Generating transmission Client')
+            self.tor_client = TransmissionClient(self.send_log,
+                                             username=self.config.tor_client_user,
+                                             password=self.config.tor_client_password,
                                              url=self.config.tor_client_url,
                                              hostname=self.config.hostname)
 

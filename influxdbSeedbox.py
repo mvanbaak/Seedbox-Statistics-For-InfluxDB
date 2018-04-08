@@ -106,13 +106,14 @@ class configManager():
 
 class influxdbSeedbox():
 
-    def __init__(self, config=None, silent=None):
+    def __init__(self, config=None, silent=None, cron=False):
 
         self.config = configManager(silent, config=config)
 
         self.output = self.config.output
         self.logger = None
         self.delay = self.config.delay
+        self.cron = cron
 
         self.influx_client = InfluxDBClient(
             self.config.influx_address,
@@ -279,6 +280,10 @@ class influxdbSeedbox():
             tracker_json = self.tor_client.process_tracker_list()
             if tracker_json:
                 self.write_influx_data(tracker_json)
+            # Ugly way to run in 'one shot' mode
+            # useful when wanting to run from cron
+            if self.cron:
+                break
             time.sleep(self.delay)
 
 
@@ -290,8 +295,9 @@ def main():
     parser.add_argument('--config', default='config.ini', dest='config', help='Specify a custom location for the config file')
     # Silent flag allows output prior to the config being loaded to also be suppressed
     parser.add_argument('--silent', action='store_true', help='Surpress All Output, regardless of config settings')
+    parser.add_argument('--cron', action='store_true', help='Run from cron, get stats, send to influxdb and quit')
     args = parser.parse_args()
-    monitor = influxdbSeedbox(silent=args.silent, config=args.config)
+    monitor = influxdbSeedbox(silent=args.silent, config=args.config, cron=args.cron)
     monitor.run()
 
 

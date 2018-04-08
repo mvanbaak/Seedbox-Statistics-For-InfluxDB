@@ -117,6 +117,8 @@ class influxdbSeedbox():
         self.influx_client = InfluxDBClient(
             self.config.influx_address,
             self.config.influx_port,
+            username=self.config.influx_user,
+            password=self.config.influx_password,
             database=self.config.influx_database,
             ssl=self.config.influx_ssl,
             verify_ssl=self.config.influx_verify_ssl
